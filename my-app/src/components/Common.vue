@@ -9,21 +9,19 @@
                         <h3>Gerenciamento de clientes</h3>
                     </v-flex>
                     <v-spacer></v-spacer>
-                    <v-flex sm4>
+                    <v-flex sm3 class="mt-3">
                         <v-layout row wrap>
-                            <v-flex sm2>
+                            <v-flex sm2 class="mt-2">
                                 <p>Filtro:</p>
                             </v-flex>
                             <v-flex sm5>
                                 <v-btn depressed small>
-                                    <v-icon right dark>cloud_upload</v-icon>
-                                    Normal
+                                    Ativos
                                 </v-btn>
                             </v-flex>
                             <v-flex sm5>
-                                <v-btn depressed small>
-                                    <v-icon right dark>cloud_upload</v-icon>
-                                    Normal
+                                <v-btn depressed small @click="teste">
+                                    Inativos
                                 </v-btn>
                             </v-flex>
                         </v-layout>
@@ -41,16 +39,14 @@
                 </v-card-title>
                 <v-data-table
                 :headers="headers"
-                :items="desserts"
+                :items="ClientsJSON.clients"
                 :search="search"
                 >
                 <template v-slot:items="props">
                     <td>{{ props.item.name }}</td>
-                    <td class="text-xs-right">{{ props.item.calories }}</td>
-                    <td class="text-xs-right">{{ props.item.fat }}</td>
-                    <td class="text-xs-right">{{ props.item.carbs }}</td>
-                    <td class="text-xs-right">{{ props.item.protein }}</td>
-                    <td class="text-xs-right">{{ props.item.iron }}</td>
+                    <td>{{ props.item.matricula }}</td>
+                    <td>{{ props.item.cpf }}</td>
+                    <td>{{ props.item.status }}</td>
                 </template>
                 <template v-slot:no-results>
                     <v-alert :value="true" color="error" icon="warning">
@@ -65,8 +61,33 @@
 </template>
 
 <script>
+import ClientsJSON from '../data/data.json'
+
 export default {
-  name: 'Common'
+  name: 'Common',
+  data () {
+      return {
+        ClientsJSON,
+        search: '',
+        headers: [
+          {
+            text: 'Nome',
+            align: 'left',
+            sortable: false,
+            value: 'name'
+          },
+          { text: 'Matrícula', value: 'matricula' },
+          { text: 'CPF', value: 'cpf' },
+          { text: 'Status', value: 'status' }
+        ],
+        clients: []
+      }
+    },
+    methods: {
+        teste() {
+            console.log(ClientsJSON);
+        }
+    }
 }
 </script>
 

@@ -1,0 +1,22 @@
+{
+    "clients": [
+        {
+            "name": "João das Neves",
+            "matricula": "111111",
+            "cpf": "000000000000",
+            "status": "Ativo"
+        },
+        {
+            "name": "João das Couves",
+            "matricula": "22222222",
+            "cpf": "000000000001",
+            "status": "Ativo"
+        },
+        {
+            "name": "João das Pás",
+            "matricula": "22222222",
+            "cpf": "000000000002",
+            "status": "Inativo"
+        }       
+    ]
+}
