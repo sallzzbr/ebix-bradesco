@@ -9,19 +9,30 @@
                         <h3>Gerenciamento de clientes</h3>
                     </v-flex>
                     <v-spacer></v-spacer>
+                    <v-flex sm2 class="mt-3">
+                        <v-btn small class="btn-inativos">
+                            <v-icon class="mr-1">person_add</v-icon>Adicionar cliente
+                        </v-btn>
+                    </v-flex>
                     <v-flex sm3 class="mt-3">
                         <v-layout row wrap>
                             <v-flex sm2 class="mt-2">
-                                <p>Filtro:</p>
+                                <p class="filter">Filtro:</p>
                             </v-flex>
                             <v-flex sm5>
-                                <v-btn depressed small>
-                                    Ativos
+                                <v-btn v-if='!filter_ativos' depressed small class="btn-ativos-filter" @click="filter_ativos = true">
+                                    <v-icon class="mr-1">check_box</v-icon>Ativos
+                                </v-btn>
+                                <v-btn v-if='filter_ativos' outline depressed small class="btn-ativos" @click="filter_ativos = false">
+                                    <v-icon class="mr-1">check_box_outline_blank</v-icon>Ativos
                                 </v-btn>
                             </v-flex>
                             <v-flex sm5>
-                                <v-btn depressed small @click="teste">
-                                    Inativos
+                                <v-btn v-if='!filter_inativos' depressed small class="btn-inativos-filter" @click="filter_inativos = true">
+                                    <v-icon class="mr-1">check_box</v-icon>Inativos
+                                </v-btn>
+                                <v-btn v-if='filter_inativos' outline depressed small class="btn-inativos" @click="filter_inativos = false">
+                                    <v-icon class="mr-1">check_box_outline_blank</v-icon>Inativos
                                 </v-btn>
                             </v-flex>
                         </v-layout>
@@ -69,6 +80,8 @@ export default {
       return {
         ClientsJSON,
         search: '',
+        filter_ativos: false,
+        filter_inativos: false,
         headers: [
           {
             text: 'Nome',
@@ -84,9 +97,7 @@ export default {
       }
     },
     methods: {
-        teste() {
-            console.log(ClientsJSON);
-        }
+        
     }
 }
 </script>
@@ -94,5 +105,28 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+.filter {
+    font-weight: 700;
+}
+
+.btn-ativos {
+    color: #009B54;
+    border-color: #009B54;
+}
+
+.btn-inativos {
+    color: #CE022A;
+    border-color: #CE022A;
+}
+
+.btn-ativos-filter {
+    color: white;
+    background-color: #009B54 !important;
+}
+
+.btn-inativos-filter {
+    color: white;
+    background-color: #CE022A !important;
+}
 
 </style>
