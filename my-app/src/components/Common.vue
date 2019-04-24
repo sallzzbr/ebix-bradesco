@@ -44,6 +44,7 @@
                             label="Search"
                             single-line
                             hide-details
+                            class="search-field"
                         ></v-text-field>
                     </v-flex>
                 </v-layout>
@@ -54,10 +55,13 @@
                 :search="search"
                 >
                 <template v-slot:items="props">
-                    <td>{{ props.item.name }}</td>
-                    <td>{{ props.item.matricula }}</td>
-                    <td>{{ props.item.cpf }}</td>
-                    <td>{{ props.item.status }}</td>
+                    <tr @click="openModal(props.item.name, props.item.matricula, props.item.cpf, props.item.status)">
+                        <td>{{ props.item.name }}</td>
+                        <td>{{ props.item.matricula }}</td>
+                        <td>{{ props.item.cpf }}</td>
+                        <td v-if="props.item.status == 'Ativo'" class="ativo-status">{{ props.item.status }}</td>
+                        <td v-else class="inativo-status">{{ props.item.status }}</td>
+                    </tr>
                 </template>
                 <template v-slot:no-results>
                     <v-alert :value="true" color="error" icon="warning">
@@ -72,7 +76,8 @@
 </template>
 
 <script>
-import ClientsJSON from '../data/data.json'
+import ClientsJSON from '../data/data.json';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Common',
@@ -96,8 +101,27 @@ export default {
         clients: []
       }
     },
+    computed: {
+        ...mapGetters([
+            'dialog'
+        ]),
+    },
     methods: {
-        
+        ...mapActions([
+            'updateDialog',
+            'updateName',
+            'updateMat',
+            'updateCPF',
+            'updateStatus'
+
+        ]),
+        openModal(name, mat, cpf, status) {
+            this.updateDialog(true);
+            this.updateName(name);
+            this.updateMat(mat);
+            this.updateCPF(cpf);
+            this.updateStatus(status);
+        }  
     }
 }
 </script>
@@ -127,6 +151,20 @@ export default {
 .btn-inativos-filter {
     color: white;
     background-color: #CE022A !important;
+}
+
+.ativo-status {
+    font-weight: 600;
+    color: #009B54;
+}
+
+.inativo-status {
+    font-weight: 600;
+    color: #CE022A;
+}
+
+tr {
+    cursor: pointer;
 }
 
 </style>
