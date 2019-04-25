@@ -56,6 +56,17 @@
                         :items="statusItems"
                         ></v-combobox>
                     </v-flex>
+                    <v-flex v-if="!client_ativo || this.client_status != ''" xs12>
+                        <p class="client-field">Justificativa</p>
+                        <p v-if="!editing">Lorem ipsum</p>
+                        <v-text-field
+                        class="mt-0 pt-0"
+                            v-else
+                            v-model="justiModel"
+                            :rules="justiRules"
+                            required
+                        ></v-text-field>
+                    </v-flex>
                     <v-flex xs12 sm4>
                         <p class="client-field">Plano</p>
                         <p v-if="!editing">111111</p>
@@ -141,6 +152,7 @@ export default {
     data () {
         return {
             valid: true,
+            client_ativo: true,
             editing: false,
             matModel: '',
             matRules: [
@@ -156,6 +168,10 @@ export default {
             telRules: [
                 v => !!v || 'Telefone obrigatório',
                 v => v.length == 8 || 'Telefone deve conter 8 números'
+            ],
+            justiModel: '',
+            justiRules: [
+                v => !!v || 'Justificativa obrigatório'
             ],
             emailModel: '',
             emailRules: [
@@ -203,6 +219,11 @@ export default {
         editBtn(){
             this.editing == false ? this.editing = true : this.editing = false;
         } 
+    },
+    watch : {
+        statusSelect(val) {
+            val == "Inativo" ? this.client_ativo = false : this.client_ativo = true;
+        }
     }
 }
 </script>
