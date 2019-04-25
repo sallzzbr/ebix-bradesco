@@ -103,7 +103,8 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'dialog'
+            'dialog',
+            'client_status'
         ]),
     },
     methods: {

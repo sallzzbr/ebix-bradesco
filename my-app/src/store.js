@@ -7,7 +7,7 @@ const state = {
   client_name: "",
   client_mat: "",
   client_cpf: "",
-  cliente_status: ""
+  client_status: ""
 };
 
 const getters = {
