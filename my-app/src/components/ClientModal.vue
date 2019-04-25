@@ -18,16 +18,17 @@
             </v-btn>
             </v-card-title>
 
-            <v-form v-model="valid">
+            <v-form v-model="valid" ref="form" lazy-validation>
                 <v-container>
                 <v-layout row wrap>
                     <v-flex xs12 sm4>
                         <p class="client-field">Matrícula</p>
                         <p v-if="!editing">{{this.client_mat}}</p>
                         <v-text-field
+                            class="mt-0 pt-0"
                             v-else
                             v-model="matModel"
-                            :rules="matrulesRules"
+                            :rules="matRules"
                             :counter="6"
                             required
                         ></v-text-field>
@@ -36,6 +37,7 @@
                         <p class="client-field">CPF</p>
                         <p v-if="!editing">{{this.client_cpf}}</p>
                         <v-text-field
+                            class="mt-0 pt-0"
                             v-else
                             v-model="cpfModel"
                             :rules="cpfRules"
@@ -47,24 +49,29 @@
                         <p class="client-field">Status</p>
                         <p v-if="!editing">{{this.client_status}}</p>
                         <v-combobox
+                        class="mt-0 pt-0"
                         v-else
                         v-model="statusSelect"
-                        :items="items"
+                        :rules="[v => !!v || 'Status obrigatório']"
+                        :items="statusItems"
                         ></v-combobox>
                     </v-flex>
                     <v-flex xs12 sm4>
                         <p class="client-field">Plano</p>
                         <p v-if="!editing">111111</p>
                         <v-combobox
+                        class="mt-0 pt-0"
                         v-else
                         v-model="planoSelect"
-                        :items="items"
+                        :rules="[v => !!v || 'Plano obrigatório']"
+                        :items="planoItems"
                         ></v-combobox>
                     </v-flex>
                     <v-flex xs12 sm4>
                         <p class="client-field">Telefone</p>
                         <p v-if="!editing">111111</p>
                         <v-text-field
+                        class="mt-0 pt-0"
                             v-else
                             v-model="telModel"
                             :rules="telRules"
@@ -76,6 +83,7 @@
                         <p class="client-field">E-mail</p>
                         <p v-if="!editing">111111</p>
                         <v-text-field
+                        class="mt-0 pt-0"
                             v-else
                             v-model="emailModel"
                             :rules="emailRules"
@@ -86,17 +94,16 @@
                         <p class="client-field">Endereço</p>
                         <p v-if="!editing">111111</p>
                         <v-text-field
+                        class="mt-0 pt-0"
                             v-else
                             v-model="addressModel"
-                            :rules="adressRules"
+                            :rules="addressRules"
                             required
                         ></v-text-field>
                     </v-flex>
                 </v-layout>
                 </v-container>
-            </v-form>         
-
-            <v-divider></v-divider>
+                 <v-divider></v-divider>
 
             <v-card-actions>
             <v-spacer></v-spacer>
@@ -106,17 +113,20 @@
                 @click="closeModal()"
                 class="cancel-btn"
             >
-                Cancelar
+                Fechar
             </v-btn>
             <v-btn
                 color="primary"
                 depressed
-                @click="closeModal()"
+                @click="saveModal()"
                 class="save-btn"
             >
                 Salvar
             </v-btn>
             </v-card-actions>
+            </v-form>         
+
+           
         </v-card>
         </v-dialog>
     </div>
@@ -130,7 +140,43 @@ export default {
     name: 'ClientModal',
     data () {
         return {
-            editing: false
+            valid: true,
+            editing: false,
+            matModel: '',
+            matRules: [
+                v => !!v || 'Matricula obrigatória',
+                v => v.length == 6 || 'Matrícula deve conter 6 números'
+            ],
+            cpfModel: '',
+            cpfRules: [
+                v => !!v || 'CPF obrigatório',
+                v => v.length == 12 || 'CPF deve conter 12 números'
+            ],
+            telModel: '',
+            telRules: [
+                v => !!v || 'Telefone obrigatório',
+                v => v.length == 8 || 'Telefone deve conter 8 números'
+            ],
+            emailModel: '',
+            emailRules: [
+                v => !!v || 'E-mail obrigatório',
+                v => /.+@.+/.test(v) || 'E-mail tem que ser válido'
+            ],
+            addressModel: '',
+            addressRules: [
+                v => !!v || 'Endereço obrigatório',
+            ],
+            planoSelect: '',
+            planoItems: [
+            'Simples',
+            'Premium',
+            'Gold'
+            ],
+            statusSelect: '',
+            statusItems: [
+            'Ativo',
+            'Inativo'
+            ]
         }
     },
     computed: {
@@ -148,6 +194,11 @@ export default {
         ]),
         closeModal(){
             this.updateDialog(false);
+        },
+        saveModal(){
+            if (this.$refs.form.validate()) {
+                this.editing = false;
+            }
         },
         editBtn(){
             this.editing == false ? this.editing = true : this.editing = false;
