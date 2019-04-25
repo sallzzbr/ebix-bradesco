@@ -56,7 +56,7 @@
                         :items="statusItems"
                         ></v-combobox>
                     </v-flex>
-                    <v-flex v-if="!client_ativo || this.client_status != ''" xs12>
+                    <v-flex v-if="!client_ativo || this.client_status != 'Ativo'" xs12>
                         <p class="client-field">Justificativa</p>
                         <p v-if="!editing">Lorem ipsum</p>
                         <v-text-field
